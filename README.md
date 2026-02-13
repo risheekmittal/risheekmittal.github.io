@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rishh - Software Engineer</title>
+    <title>Rishh - Mobile Engineer</title>
     
     <!-- CDN Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -21,6 +21,7 @@
             --accent-purple: #b830ff;
             --accent-pink: #ff2e97;
             --accent-cyan: #00ffaa;
+            --accent-yellow: #ffeb3b;
             --text-primary: #ffffff;
             --text-secondary: #a0a0b8;
             --glass-bg: rgba(255, 255, 255, 0.03);
@@ -38,7 +39,6 @@
             background: var(--primary-bg);
             color: var(--text-primary);
             overflow-x: hidden;
-            cursor: none;
         }
         
         /* Custom Cursor */
@@ -50,8 +50,10 @@
             position: fixed;
             pointer-events: none;
             z-index: 10000;
-            transition: all 0.1s ease;
+            transition: all 0.15s ease;
             mix-blend-mode: difference;
+            box-shadow: 0 0 20px var(--accent-cyan);
+            transform: translate(-50%, -50%);
         }
         
         .cursor-trail {
@@ -62,14 +64,70 @@
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-            box-shadow: 0 0 20px var(--accent-blue);
+            box-shadow: 0 0 30px var(--accent-blue);
+            transform: translate(-50%, -50%);
         }
         
         .cursor.hover {
             width: 60px;
             height: 60px;
-            background: rgba(0, 240, 255, 0.1);
+            background: rgba(0, 240, 255, 0.2);
             border-color: var(--accent-purple);
+        }
+        
+        .cursor-glow {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.3) 0%, transparent 70%);
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            filter: blur(30px);
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Scanlines */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            animation: scanlineMove 8s linear infinite;
+        }
+        
+        @keyframes scanlineMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100px); }
+        }
+        
+        /* Grid Background */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridPulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
         }
         
         /* Animated Background */
@@ -81,15 +139,37 @@
             height: 100%;
             z-index: 0;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(184, 48, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(255, 46, 151, 0.08) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(184, 48, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 46, 151, 0.1) 0%, transparent 50%);
             animation: bgShift 20s ease-in-out infinite alternate;
         }
         
         @keyframes bgShift {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 30px) scale(1.05); }
+            100% { transform: translate(50px, 30px) scale(1.1); }
+        }
+        
+        /* Light Beams */
+        .light-beam {
+            position: fixed;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--accent-cyan), transparent);
+            top: 0;
+            opacity: 0.2;
+            animation: beamScan 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 3;
+        }
+        
+        .light-beam:nth-child(1) { left: 20%; }
+        .light-beam:nth-child(2) { left: 50%; animation-delay: -2s; }
+        .light-beam:nth-child(3) { left: 80%; animation-delay: -4s; }
+        
+        @keyframes beamScan {
+            0%, 100% { opacity: 0.1; transform: translateX(0); }
+            50% { opacity: 0.4; transform: translateX(100px); }
         }
         
         .noise {
@@ -99,7 +179,7 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            opacity: 0.03;
+            opacity: 0.05;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
             pointer-events: none;
             animation: grain 8s steps(10) infinite;
@@ -151,17 +231,29 @@
             position: relative;
             letter-spacing: -0.02em;
             text-transform: uppercase;
-            filter: drop-shadow(0 0 40px rgba(0, 240, 255, 0.5));
+            filter: drop-shadow(0 0 60px rgba(0, 240, 255, 0.8));
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes titlePulse {
+            0%, 100% { filter: drop-shadow(0 0 60px rgba(0, 240, 255, 0.8)); }
+            50% { filter: drop-shadow(0 0 100px rgba(184, 48, 255, 0.9)); }
         }
         
         .hero-subtitle {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(20px, 3vw, 36px);
+            font-size: clamp(16px, 2.5vw, 30px);
             font-weight: 300;
             letter-spacing: 0.3em;
             margin-top: 20px;
             color: var(--text-secondary);
             text-transform: uppercase;
+            animation: subtitleGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes subtitleGlow {
+            from { text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+            to { text-shadow: 0 0 20px rgba(184, 48, 255, 0.8); }
         }
         
         .scroll-indicator {
@@ -173,6 +265,12 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
         }
         
         .scroll-line {
@@ -191,7 +289,7 @@
             width: 100%;
             height: 20px;
             background: var(--accent-blue);
-            box-shadow: 0 0 10px var(--accent-blue);
+            box-shadow: 0 0 20px var(--accent-blue);
             animation: scrollMove 2s ease-in-out infinite;
         }
         
@@ -257,7 +355,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.5s;
         }
         
@@ -277,6 +375,8 @@
             grid-template-columns: 1fr 1fr;
             gap: 60px;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
         
         .about-text h3 {
@@ -328,6 +428,8 @@
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 30px;
             margin-top: 60px;
+            position: relative;
+            z-index: 1;
         }
         
         .skill-item {
@@ -388,6 +490,8 @@
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 40px;
             margin-top: 60px;
+            position: relative;
+            z-index: 1;
         }
         
         .project-card {
@@ -587,6 +691,8 @@
         .contact-container {
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
         
         .contact-form {
@@ -755,6 +861,26 @@
             75% { transform: translate(100px, 100px) rotate(270deg); }
         }
         
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            animation: glitch-skew 1s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            10% { transform: skew(-2deg); }
+            20% { transform: skew(2deg); }
+            30% { transform: skew(0deg); }
+            40% { transform: skew(1deg); }
+            50% { transform: skew(0deg); }
+            60% { transform: skew(-1deg); }
+            70% { transform: skew(2deg); }
+            80% { transform: skew(-2deg); }
+            90% { transform: skew(1deg); }
+            100% { transform: skew(0deg); }
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .about-container {
@@ -784,42 +910,37 @@
                 gap: 30px;
             }
         }
-        
-        /* Glitch Effect */
-        .glitch {
-            position: relative;
-            animation: glitch-skew 1s infinite linear alternate-reverse;
-        }
-        
-        @keyframes glitch-skew {
-            0% { transform: skew(0deg); }
-            10% { transform: skew(-2deg); }
-            20% { transform: skew(2deg); }
-            30% { transform: skew(0deg); }
-            40% { transform: skew(1deg); }
-            50% { transform: skew(0deg); }
-            60% { transform: skew(-1deg); }
-            70% { transform: skew(2deg); }
-            80% { transform: skew(-2deg); }
-            90% { transform: skew(1deg); }
-            100% { transform: skew(0deg); }
-        }
     </style>
 </head>
 <body>
     <!-- Custom Cursor -->
     <div class="cursor"></div>
     <div class="cursor-trail"></div>
+    <div class="cursor-glow"></div>
+    
+    <!-- Scanlines -->
+    <div class="scanlines"></div>
+    
+    <!-- Grid Background -->
+    <div class="grid-background"></div>
     
     <!-- Background Elements -->
     <div class="bg-animation"></div>
     <div class="noise"></div>
+    
+    <!-- Light Beams -->
+    <div class="light-beam"></div>
+    <div class="light-beam"></div>
+    <div class="light-beam"></div>
+    
     <div id="canvas-container"></div>
     
     <!-- Floating Shapes -->
     <div class="floating-shape" style="width: 300px; height: 300px; background: var(--accent-purple); top: 10%; left: 5%;"></div>
     <div class="floating-shape" style="width: 400px; height: 400px; background: var(--accent-blue); top: 60%; right: 10%; animation-delay: -5s;"></div>
     <div class="floating-shape" style="width: 250px; height: 250px; background: var(--accent-cyan); bottom: 20%; left: 50%; animation-delay: -10s;"></div>
+    <div class="floating-shape" style="width: 350px; height: 350px; background: var(--accent-pink); top: 40%; right: 30%; animation-delay: -7s;"></div>
+    <div class="floating-shape" style="width: 200px; height: 200px; background: var(--accent-yellow); bottom: 40%; left: 20%; animation-delay: -12s;"></div>
     
     <div class="main-container">
         <!-- Hero Section -->
@@ -837,7 +958,7 @@
         <section id="about">
             <h2 class="section-title">About Me</h2>
             <div class="about-container">
-                <div class="about-text">
+                <div class="about-text glass-card">
                     <h3>Mid-Level Mobile Engineer</h3>
                     <p>With nearly 4 years of hands-on experience, I specialize in delivering high-performance mobile solutions across iOS, Android, and cross-platform frameworks. My expertise spans React Native, Flutter, Native iOS (Swift/SwiftUI), and Android (Kotlin).</p>
                     <p>Currently at Adglobal360, I've spearheaded critical stability improvements for production apps serving 10K+ daily active users, increasing crash-free sessions from 43% to 77% while reducing support tickets by 98%.</p>
@@ -1045,7 +1166,7 @@
                         🔗 <a href="https://linkedin.com/in/risheek" style="color: var(--accent-cyan); text-decoration: none;" target="_blank">linkedin.com/in/risheek</a>
                     </p>
                 </div>
-                <form class="contact-form">
+                <form class="contact-form glass-card">
                     <div class="form-group">
                         <label class="form-label" for="name">Name</label>
                         <input class="form-input" type="text" id="name" name="name" required>
@@ -1087,9 +1208,11 @@
         // Custom Cursor
         const cursor = document.querySelector('.cursor');
         const cursorTrail = document.querySelector('.cursor-trail');
+        const cursorGlow = document.querySelector('.cursor-glow');
         let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
         let trailX = 0, trailY = 0;
+        let glowX = 0, glowY = 0;
         
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
@@ -1101,9 +1224,15 @@
             cursorY += (mouseY - cursorY) * 0.2;
             trailX += (mouseX - trailX) * 0.1;
             trailY += (mouseY - trailY) * 0.1;
+            glowX += (mouseX - glowX) * 0.05;
+            glowY += (mouseY - glowY) * 0.05;
             
-            cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-            cursorTrail.style.transform = `translate(${trailX}px, ${trailY}px)`;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            cursorTrail.style.left = trailX + 'px';
+            cursorTrail.style.top = trailY + 'px';
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
             
             requestAnimationFrame(animateCursor);
         }
@@ -1126,17 +1255,17 @@
         
         // Create particle system
         const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 2000;
+        const particlesCount = 3000;
         const posArray = new Float32Array(particlesCount * 3);
         
         for(let i = 0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 50;
+            posArray[i] = (Math.random() - 0.5) * 100;
         }
         
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
         
         const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.02,
+            size: 0.03,
             color: 0x00f0ff,
             transparent: true,
             opacity: 0.6,
@@ -1168,6 +1297,18 @@
         sphere.position.set(-5, 2, -5);
         scene.add(sphere);
         
+        // Add octahedron
+        const octaGeometry = new THREE.OctahedronGeometry(1.5);
+        const octaMaterial = new THREE.MeshBasicMaterial({
+            color: 0xff2e97,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.2
+        });
+        const octa = new THREE.Mesh(octaGeometry, octaMaterial);
+        octa.position.set(4, -3, -6);
+        scene.add(octa);
+        
         camera.position.z = 10;
         
         let mouseXThree = 0;
@@ -1181,13 +1322,16 @@
         function animateThree() {
             requestAnimationFrame(animateThree);
             
-            particlesMesh.rotation.y += 0.001;
-            particlesMesh.rotation.x += 0.0005;
+            particlesMesh.rotation.y += 0.002;
+            particlesMesh.rotation.x += 0.001;
             
             torus.rotation.x += 0.01;
             torus.rotation.y += 0.005;
             
             sphere.rotation.y += 0.003;
+            
+            octa.rotation.x += 0.015;
+            octa.rotation.z += 0.01;
             
             camera.position.x += (mouseXThree * 2 - camera.position.x) * 0.05;
             camera.position.y += (mouseYThree * 2 - camera.position.y) * 0.05;
@@ -1196,7 +1340,7 @@
         }
         animateThree();
         
-        // Smooth Scroll with Lenis (with fallback)
+        // Smooth Scroll with Lenis
         let lenis;
         
         if (typeof Lenis !== 'undefined') {
@@ -1213,8 +1357,6 @@
             }
             requestAnimationFrame(raf);
         } else {
-            // Fallback smooth scroll
-            console.log('Lenis not found, using fallback smooth scroll');
             document.documentElement.style.scrollBehavior = 'smooth';
         }
         
@@ -1254,32 +1396,6 @@
                     ease: 'power3.out'
                 });
             }
-        });
-        
-        // Skills Animation
-        gsap.from('.skill-item', {
-            scrollTrigger: {
-                trigger: '.skills-grid',
-                start: 'top 70%'
-            },
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: 'back.out(1.7)'
-        });
-        
-        // Projects Animation
-        gsap.from('.project-card', {
-            scrollTrigger: {
-                trigger: '.projects-grid',
-                start: 'top 70%'
-            },
-            scale: 0.8,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: 'power2.out'
         });
         
         // Timeline Animation
@@ -1340,7 +1456,7 @@
                 yoyo: true,
                 repeat: 1,
                 onComplete: () => {
-                    alert('Message sent! (This is a demo - no actual submission)');
+                    alert('Message sent! (Demo only)');
                     e.target.reset();
                 }
             });
@@ -1377,21 +1493,6 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-        
-        // Scroll-based color transitions
-        ScrollTrigger.create({
-            trigger: '#about',
-            start: 'top center',
-            end: 'bottom center',
-            onEnter: () => gsap.to('.bg-animation', {
-                background: 'radial-gradient(circle at 20% 50%, rgba(184, 48, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.15) 0%, transparent 50%)',
-                duration: 1
-            }),
-            onLeaveBack: () => gsap.to('.bg-animation', {
-                background: 'radial-gradient(circle at 20% 50%, rgba(184, 48, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%)',
-                duration: 1
-            })
         });
         
         // Text Scramble Effect
